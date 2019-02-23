@@ -1478,11 +1478,11 @@ common.上滑 = function () {
 
 // var r=common
 // log(r)
-var arr=[]
-for(var k in common){
-  arr.push(k)
-}
-log(arr)
+// var arr=[]
+// for(var k in common){
+//   arr.push(k)
+// }
+// log(arr)
 
 
-// module.exports = common
+module.exports = common
