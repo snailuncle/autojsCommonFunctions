@@ -7,6 +7,7 @@
  * 妈呀:  整理了一宿,现在是早上6:34
  * 功能: 把某些常用的函数集中起来,方便调用
  * 函数来源: 都是群里的大佬写的,稻草人,+攀登,Ai,破晓的星辰,灶猫,家,浩然,白酒煮饭,生僻字大佬,内个谁,Xero,无名小姐,壞蛋┭,锦瑟安年Ω,专业滥竽充数,膜拜以上几位大神,不管你们同意不同意,我都把你们的代码搬到一块了,O(∩_∩)O哈哈~
+ * git:  https://github.com/snailuncle/autojsCommonFunctions/blob/master/autojsCommonFunctions.js
  */
 
 
