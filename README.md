@@ -12,5 +12,7 @@
   return common
 }
 var common=导入常用函数模块()
+log(common)
+common.闪光弹('fire in the hole')
 
 ```
