@@ -84,7 +84,9 @@
 '开关飞行模式',
 '上滑',
 '获取deflate网页内容',
-'获取gzip网页内容'
+'获取gzip网页内容',
+'发送通知',
+'去除通知',
 ]
 
 
@@ -1585,6 +1587,39 @@ common.获取gzip网页内容 = function (url) {
   return false
 }
 
+common.发送通知=function (){
+  var manager = context.getSystemService(android.app.Service.NOTIFICATION_SERVICE);
+  var notification;
+  if (device.sdkInt >= 26) {
+      var channel = new android.app.NotificationChannel("channel_id", "channel_name", android.app.NotificationManager.IMPORTANCE_DEFAULT);
+      channel.enableLights(true);
+      channel.setLightColor(0xff0000);
+      channel.setShowBadge(false);
+      manager.createNotificationChannel(channel);
+      notification = new android.app.Notification.Builder(context, "channel_id")
+          .setContentTitle("通知栏标题"+new date())
+          .setContentText("这是消息的内容")
+          .setWhen(new Date().getTime())
+          .setSmallIcon(org.autojs.autojs.R.drawable.autojs_material)
+          .setTicker("这是状态栏显示的内容")
+          .build();
+  } else {
+      notification = new android.app.Notification.Builder(context)
+          .setContentTitle("通知栏标题")
+          .setContentText("这是消息的内容")
+          .setWhen(new Date().getTime())
+          .setSmallIcon(org.autojs.autojs.R.drawable.autojs_material)
+          .setTicker("这是状态栏显示的内容")
+          .build();
+  }
+  manager.notify(1, notification);
+}
+
+common.去除通知=function (){
+  var manager = context.getSystemService(android.app.Service.NOTIFICATION_SERVICE);
+  manager.cancelAll();
+  // manager.cancel(1);
+}
 
 // var r=common
 // log(r)
