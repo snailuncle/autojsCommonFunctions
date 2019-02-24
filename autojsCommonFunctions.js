@@ -77,7 +77,9 @@
 '随机字符串',
 'wifi状态',
 '开关飞行模式',
-'上滑'
+'上滑',
+'获取deflate网页内容',
+'获取gzip网页内容'
 ]
 
 
@@ -1486,6 +1488,97 @@ common.上滑 = function () {
   sleep(1500);
 }
 
+common.获取deflate网页内容 = function (url) {
+  importClass('java.io.BufferedReader');
+  importClass('java.io.InputStreamReader');
+  importClass("java.util.zip.InflaterInputStream")
+  importClass('java.io.ByteArrayInputStream');
+  importClass("java.util.zip.Inflater")
+
+  var res = http.get(url)
+  log("statusCode = " + res.statusCode);
+  var deflateFileContent = res.body.bytes()
+  var 网页内容 = null;
+  if (deflateFileContent) {
+    var br = new BufferedReader(new InputStreamReader(new InflaterInputStream(new ByteArrayInputStream(deflateFileContent), new Inflater(true))));
+    var lns = [],
+      cl;
+    while (cl = br.readLine()) lns.push(cl);
+    网页内容 = lns.join("\n")
+    // log('网页内容')
+    // log(网页内容)
+    return 网页内容
+  } else {
+    console.error('下载失败')
+    exit()
+  }
+  return false
+}
+
+common.获取gzip网页内容 = function (url) {
+  function 保存zip文件(zipFile) {
+    var path = files.join(files.cwd(), "1下载bilibili弹幕专用/webPage.gzip.js")
+    files.createWithDirs(path)
+    log("path=", path)
+    // path= /storage/emulated/0/脚本/zip文件专用/test.zip
+    files.writeBytes(path, zipFile)
+    var r = 解压zip文件(path)
+    log(r)
+    return r
+  }
+
+  function 解压zip文件(文件路径) {
+    //同一目录下的同一文件名
+    // unzipGzipFile(sourceGzipFilePath, targetPath)
+    var fileName = files.getName(文件路径)
+    var 解压后的文件路径 = 文件路径.replace(fileName, 'webPage.js')
+    log('解压的解压后的文件路径=', 解压后的文件路径)
+    files.createWithDirs(解压后的文件路径)
+    // com.stardust.io.Zip.unzip(new java.io.File(文件路径), new java.io.File(解压后的文件路径))
+    var sourceGzipFilePath = 文件路径
+    var targetPath = 解压后的文件路径
+    unzipGzipFile(sourceGzipFilePath, targetPath)
+    return targetPath
+  }
+
+  function unzipGzipFile(sourceGzipFilePath, targetPath) {
+    importClass(java.io.FileInputStream);
+    importClass(java.util.zip.GZIPInputStream);
+    importClass('java.io.FileOutputStream');
+
+    var sourceGzipFilePath = sourceGzipFilePath || '/sdcard/tempSourceGzipFilePath.js'
+    var targetPath = targetPath || '/sdcard/tempTargetPath.js'
+    log('sourceGzipFilePath')
+    log(sourceGzipFilePath)
+    log('targetPath')
+    log(targetPath)
+    var sChunk = 8192;
+    var gzipFileInputStream = new FileInputStream(sourceGzipFilePath);
+    var zipin = new GZIPInputStream(gzipFileInputStream);
+    var buffer = util.java.array('byte', sChunk)
+    var out = new FileOutputStream(targetPath);
+    var length;
+    while ((length = zipin.read(buffer, 0, sChunk)) != -1)
+      out.write(buffer, 0, length);
+    out.close();
+    zipin.close();
+  }
+  var res = http.get(url)
+  log("statusCode = " + res.statusCode);
+  var gzipFileContent = res.body.bytes()
+  var 网页内容 = null;
+  if (gzipFileContent) {
+    var 网页保存路径 = 保存zip文件(gzipFileContent)
+    网页内容 = files.read(网页保存路径)
+    // log('网页内容')
+    // log(网页内容)
+    return 网页内容
+  } else {
+    console.error('下载失败')
+    exit()
+  }
+  return false
+}
 
 
 // var r=common
