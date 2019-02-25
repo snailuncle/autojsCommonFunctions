@@ -1683,13 +1683,14 @@ common.clickAttr = function (attr, value, 找控件默认超时时间) {
     default:
       alert('没有这个属性')
       exit()
+  }
       if (view) {
         view.click()
         return true
       } else {
         return false
       }
-  }
+  
 }
 common.pressAttr = function (attr, value, 找控件默认超时时间) {
   var 找控件默认超时时间 = 找控件默认超时时间 || 10000
@@ -1707,13 +1708,14 @@ common.pressAttr = function (attr, value, 找控件默认超时时间) {
     default:
       alert('没有这个属性')
       exit()
+  }
       if (view) {
         common.点击控件(view)
         return true
       } else {
         return false
       }
-  }
+  
 }
 
 
