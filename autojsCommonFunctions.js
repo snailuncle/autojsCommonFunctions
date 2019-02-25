@@ -91,6 +91,7 @@
 'pressAttr',
 '获取拼音',
 '画出控件区域',
+'获取多开分身右侧字母区域控件',
 ]
 
 
@@ -1799,7 +1800,38 @@ common.画出控件区域=function (view,duration){
   sleep(duration)
 }
 
-
+common.获取多开分身右侧字母区域控件=function (){
+  // 默认找10次,每次延迟一秒
+  var 查找次数=查找次数 || 10
+  //右侧字母框的特征,  就是长,细
+  // 长 高度的0.739
+  // 细 宽度的0.066
+  // 左上角  0.933  0.186
+  var width = device.width
+  var height = device.height
+  var 字母控件=false;
+  for(let i=0;i<查找次数;i++){
+    var 右侧字母区查找结果 = className('android.view.View').boundsInside(width * 0.9, height * 0.1, device.width, device.height * 0.95).filter(
+      function (view) {
+        var bounds = view.bounds()
+        var w = bounds.width()
+        var h = bounds.height()
+        if (w < width * 0.1 && w > width * 0.03 && h < height * 0.8 && h > height * 0.7) {
+          return true
+        } else {
+          return false
+        }
+      }
+    ).find()
+    if(右侧字母区查找结果.length>0){
+      字母控件=右侧字母区查找结果[0]
+      break;
+    }
+    sleep(1000)
+  }
+  if(!字母控件){alert('没有找到多开分身右侧字母控件');exit()}
+  return 字母控件
+}
 
 
 
