@@ -94,6 +94,11 @@
 '获取多开分身右侧字母区域控件',
 '画矩形',
 '画点',
+'strip', // 去除头尾空格
+'大数组包含小数组',
+'getObjType',
+'deepCopy',  // 深拷贝
+'反色';
 ]
 
 
@@ -1969,9 +1974,76 @@ common.画点=function (x,y,r,duration){
   sleep(duration)
 }
 
+//去除头尾空格
+common.strip = function (str) {
+  log(arguments.callee.name + '开始')
+  var whitespace = ' \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000';
+  for (var i = 0, len = str.length; i < len; i++) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+      str = str.substring(i);
+      break;
+    }
+  }
+  for (i = str.length - 1; i >= 0; i--) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+      str = str.substring(0, i + 1);
+      break;
+    }
+  }
+  log(arguments.callee.name + '结束')
+  return whitespace.indexOf(str.charAt(0)) === -1 ? str : '';
+}
+
+common.大数组包含小数组 = function (bigArr, smallArr) {
+  //对于重复的元素采用计数的方式对比
+  var bigArrObj = {}
+  var smallArrObj = {}
+  for (let i = 0; i < bigArr.length; i++) {
+    var has = bigArrObj.hasOwnProperty(bigArr[i])
+    if (has) {
+      bigArrObj[bigArr[i]]++;
+    } else {
+      bigArrObj[bigArr[i]] = 1
+    }
+  }
+  for (let i = 0; i < smallArr.length; i++) {
+    var has = smallArrObj.hasOwnProperty(smallArr[i])
+    if (has) {
+      smallArrObj[smallArr[i]]++;
+    } else {
+      smallArrObj[smallArr[i]] = 1
+    }
+  }
+  for (var k in smallArrObj) {
+    if (bigArrObj.hasOwnProperty(k) && bigArrObj[k] >= smallArrObj[k]) {} else {
+      return false
+    }
+  }
+  return true
+}
 
 
+common.getObjType = function (obj) {
+// JavaScript 标准文档中定义: [[Class]] 的值只可能是下面字符串中的一个： Arguments, Array, Boolean, Date, Error, Function, JSON, Math, Number, Object, RegExp, String.
+  var result = Object.prototype.toString.call(obj)
+  result=result.match(/ \w+/)[0]
+  return result
+}
 
+common.deepCopy=function (obj) {
+  if (typeof obj != 'object') {
+      return obj;
+  }
+  var newobj = {};
+  for (var attr in obj) {
+      newobj[attr] = deepCopy(obj[attr]);
+  }
+  return newobj;
+};
+
+function 反色(color) {
+  return (-1 - colors.argb(0, colors.red(color), colors.green(color), colors.blue(color)));
+};
 // var r=common
 // log(r)
 // var arr=[]
