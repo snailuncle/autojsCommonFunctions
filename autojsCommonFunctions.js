@@ -93,6 +93,7 @@
 '画出控件区域',
 '获取多开分身右侧字母区域控件',
 '画矩形',
+'画点',
 ]
 
 
@@ -1900,6 +1901,71 @@ common.画矩形=function (left,top,right,bottom,duration){
   }
 
   showView(left,top,right,bottom)
+  sleep(duration)
+}
+
+common.画点=function (x,y,r,duration){
+  var r=r || 6;
+  var window, paint, bitmap, bitmapCanvas;
+  var duration=duration || 2000
+  function 创建悬浮窗() {
+    window = floaty.rawWindow( <canvas id = "board"
+      h = "{{device.height}}"
+      w = "{{device.width}}" />
+    );
+    // setInterval(() => {}, 3000)
+    window.setSize(device.width, device.height)
+    window.setTouchable(false);
+    // window.setPosition(0, 110)
+    // var bitmap = android.graphics.Bitmap.createBitmap(1080, 1920, android.graphics.Bitmap.Config.ARGB_8888);
+    bitmap = android.graphics.Bitmap.createBitmap(device.width, device.height, android.graphics.Bitmap.Config.ARGB_8888);
+    bitmapCanvas = new Canvas(bitmap);
+    paint = new Paint()
+    paint.setStrokeWidth(10);
+    var color = '#00ff00'
+    color = colors.parseColor(color)
+    paint.setColor(color)
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setTextAlign(Paint.Align.CENTER);
+    paint.setTextSize(35);
+    window.board.on("draw", function (canvas) {
+      canvas.drawBitmap(bitmap, 0, 0, paint);
+    });
+  }
+
+  function showView(x,y,r) {
+    创建悬浮窗()
+    var originalStrokeWidth = paint.getStrokeWidth()
+    var originalColor = paint.getColor()
+    var rndColor = getRndColor()
+    var color = colors.parseColor(rndColor)
+    paint.setColor(color)
+    paint.setStrokeWidth(20)
+    画点(x,y,r)
+    paint.setColor(originalColor)
+    paint.setStrokeWidth(originalStrokeWidth)
+  }
+
+  function 画点(x,y,r) {
+    bitmapCanvas.drawCircle(x,y,r,paint)
+  }
+
+  function getRndColor() {
+    var a, r, g, b;
+    a = Math.floor(0), r = Math.floor(随机0_255()), g = Math.floor(随机0_255()), b = Math.floor(随机0_255());
+    // var 反色 = -1 - colors.argb(0, r, g, b);
+    var color = colors.argb(0, r, g, b);
+    color = colors.toString(color)
+    log(color)
+    return color
+  }
+
+  function 随机0_255() {
+    var r = parseInt(255 * Math.random())
+    return r
+  }
+
+  showView(x,y,r)
   sleep(duration)
 }
 
