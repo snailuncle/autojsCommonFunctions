@@ -1507,14 +1507,17 @@ common.上滑 = function () {
   sleep(1500);
 }
 
-common.获取deflate网页内容 = function (url) {
+common.获取deflate网页内容 = function (url,headers) {
   importClass('java.io.BufferedReader');
   importClass('java.io.InputStreamReader');
   importClass("java.util.zip.InflaterInputStream")
   importClass('java.io.ByteArrayInputStream');
   importClass("java.util.zip.Inflater")
 
-  var res = http.get(url)
+  var res = http.get(
+    url, {
+      headers: headers
+    })
   log("statusCode = " + res.statusCode);
   var deflateFileContent = res.body.bytes()
   var 网页内容 = null;
@@ -1534,7 +1537,7 @@ common.获取deflate网页内容 = function (url) {
   return false
 }
 
-common.获取gzip网页内容 = function (url) {
+common.获取gzip网页内容 = function (url,headers) {
   function 保存zip文件(zipFile) {
     var path = files.join(files.cwd(), "1下载bilibili弹幕专用/webPage.gzip.js")
     files.createWithDirs(path)
@@ -1582,7 +1585,10 @@ common.获取gzip网页内容 = function (url) {
     out.close();
     zipin.close();
   }
-  var res = http.get(url)
+  var res = http.get(
+    url, {
+      headers: headers
+    })
   log("statusCode = " + res.statusCode);
   var gzipFileContent = res.body.bytes()
   var 网页内容 = null;
