@@ -99,8 +99,8 @@
 'getObjType',
 'deepCopy',  // 深拷贝
 '反色',
-'bomb上传文件',
-'bmom下载文件',
+'bmob上传文件',
+'bmob下载文件',
 '过微信QQ滑块',
 ]
 
@@ -2054,7 +2054,7 @@ function 反色(color) {
   return (-1 - colors.argb(0, colors.red(color), colors.green(color), colors.blue(color)));
 };
 
-common.bomb上传文件 = function (url, path, appId, restKey) {
+common.bmob上传文件 = function (url, path, appId, restKey) {
 
   // 使用例子
   // var url = "https://api2.bmob.cn/2/files/pinyin4j.jar"
@@ -2290,7 +2290,7 @@ common.过微信QQ滑块=function(){
 
 }
 
-common.bmom下载文件 = function (url,path){
+common.bmob下载文件 = function (url,path){
   // var fileName='pinyin4j.jar'
   // var path=files.join(files.getSdcardPath(), "/jar/",fileName)
   // log(path)
