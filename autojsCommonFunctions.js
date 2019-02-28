@@ -100,6 +100,7 @@
 'deepCopy',  // 深拷贝
 '反色',
 'bomb上传文件',
+'bmom下载文件',
 '过微信QQ滑块',
 ]
 
@@ -2289,6 +2290,17 @@ common.过微信QQ滑块=function(){
 
 }
 
+common.bmom下载文件 = function (url,path){
+  // var fileName='pinyin4j.jar'
+  // var path=files.join(files.getSdcardPath(), "/jar/",fileName)
+  // log(path)
+  // /storage/emulated/0/jar/pinyin4j.jar
+  // var url="http://bmob-cdn-11368.b0.upaiyun.com/2019/03/01/9a8b935d40dfd2bb80e5eb964c168b0a.jar"
+  var r = http.get(url);
+  log("code = " + r.statusCode);
+  files.writeBytes(path,r.body.bytes())
+  log('bmom下载文件完毕'+path)
+}
 
 // var r=common
 // log(r)
