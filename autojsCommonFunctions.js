@@ -2,7 +2,7 @@
 
 /**
  * 整理者: 家
- * QQ:   203118908
+ * QQ:   203118908  有问题请加QQ反馈
  * 日期:  20190224
  * 妈呀:  整理了一宿,现在是早上6:34
  * 功能: 把某些常用的函数集中起来,方便调用
@@ -102,6 +102,8 @@
 'bmob上传文件',
 'bmob下载文件',
 '过微信QQ滑块',
+'确保有jar文件',
+'获取QQ收藏内容',
 ]
 
 
@@ -2300,6 +2302,81 @@ common.bmob下载文件 = function (url,path){
   log("code = " + r.statusCode);
   files.writeBytes(path,r.body.bytes())
   log('bmom下载文件完毕'+path)
+}
+
+common.确保有jar文件 = function (jarFileName){
+  // 确保有jar文件("pinyin4j")
+  var jsoupUrl="http://bmob-cdn-11368.b0.upaiyun.com/2019/03/01/33dd4f2f40b9a65980765ec28535c906.jar"
+  var pinyin4jUrl="http://bmob-cdn-11368.b0.upaiyun.com/2019/03/01/ef62e76940139d50808131442e9bc1fc.jar"
+  var sdPath=files.getSdcardPath()
+  var path = files.join(sdPath, "/autojsLib/",jarFileName+".jar")
+  files.ensureDir(path)
+  var r=files.exists(path)
+  if(r){
+    return true;
+  }else{
+    switch(jarFileName)
+    {
+    case 'jsoup':
+      common.bmob下载文件(jsoupUrl,path)
+      break;
+    case 'pinyin4j':
+      common.bmob下载文件(pinyin4jUrl,path)
+      break;
+    default:
+      toastLog('没加这个jar,你自己加吧==>>'+jarFileName)
+      alert('没加这个jar,你自己加吧==>>'+jarFileName)
+      exit()
+    }
+  }
+}
+
+common.获取QQ收藏内容(url){
+  /**
+   * 作者: 家
+   * Q Q:  203118908
+   * 时间: 20190204
+   * 功能: 提取QQ收藏的完整内容,保留原文本格式
+   * 注意: 需要将jsoup放到/sdcard/jsoup.jar
+   * 注意: jsoup第一次加载需要几秒钟,之后就很快
+   */
+  var jarFileName="jsoup"
+  common.确保有jar文件(jarFileName)
+  var sdPath=files.getSdcardPath()
+  var path = files.join(sdPath, "/autojsLib/",jarFileName+".jar")
+  runtime.loadJar(path)
+  importClass("org.jsoup.Jsoup")
+  importClass("java.io.IOException")
+  importClass("java.util.HashMap")
+  importClass("org.jsoup.Jsoup")
+  importClass("org.jsoup.nodes.Document")
+  importClass("org.jsoup.nodes.Element")
+  importClass("org.jsoup.select.Elements")
+  // var url = "https://sharechain.qq.com/b9084714857c5d5bb2a2ef4d775f4e24";
+  var r = http.get(url, {
+    headers: {
+      'Accept-Language': 'zh-cn,zh;q=0.5',
+      'User-Agent': 'Mozilla/5.0(Macintosh;IntelMacOSX10_7_0)AppleWebKit/535.11(KHTML,likeGecko)Chrome/17.0.963.56Safari/535.11'
+    }
+  });
+  var result = r.body.string()
+  // result = result.match(/window.syncData.*?script/)
+  result = result.match(/<script type="text\/javascript">window.syncData.*?<\/script>/)
+  result = result[0]
+  result = result.match(/window.syncData = {.*}/)
+  result = result[0]
+  result = result.replace("window.syncData = ", '')
+  result = result.replace(/(\\n|\\u003Cbr  \/>)/g, '这个一会要换成换行符')
+  //
+  result = JSON.parse(result)
+  result = result.shareData
+  result = result.html_content
+  var doc = Jsoup.parseBodyFragment(result);
+  var body = doc.body();
+  result = Jsoup.parse(body).text()
+  result = result.replace(/这个一会要换成换行符/g, '\n')
+  // log(result)
+  return result
 }
 
 // var r=common
