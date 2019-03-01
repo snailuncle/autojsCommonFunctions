@@ -2331,7 +2331,7 @@ common.确保有jar文件 = function (jarFileName){
   }
 }
 
-common.获取QQ收藏内容(url){
+common.获取QQ收藏内容=function(url){
   /**
    * 作者: 家
    * Q Q:  203118908
