@@ -16,6 +16,7 @@
 //   var r = http.get(url)
 //   log("code = " + r.statusCode);
 //   var html=r.body.bytes()
+//   files.write('./autojsCommonFunctions.js','')
 //   files.writeBytes('./autojsCommonFunctions.js',html)
 //   var common=require('./autojsCommonFunctions.js')
 //   return common
