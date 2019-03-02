@@ -2057,6 +2057,7 @@ common.getObjType = function (obj) {
 // JavaScript 标准文档中定义: [[Class]] 的值只可能是下面字符串中的一个： Arguments, Array, Boolean, Date, Error, Function, JSON, Math, Number, Object, RegExp, String.
   var result = Object.prototype.toString.call(obj)
   result=result.match(/ \w+/)[0]
+  result=result.replace(/ /g,'')
   return result
 }
 
