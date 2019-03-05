@@ -1666,10 +1666,10 @@ common.去除通知=function (){
   // manager.cancel(1);
 }
 
+
 common.获取拼音=function (src){
-  var sd = files.getSdcardPath()
-  var jarPath = files.join(sd, 'pinyin4j-2.5.0.jar')
-  runtime.loadJar(jarPath)
+  var path=common.确保有jar文件('pinyin4j')
+  runtime.loadJar(path)
   importClass(net.sourceforge.pinyin4j.PinyinHelper);
   importClass(net.sourceforge.pinyin4j.format.HanyuPinyinCaseType);
   importClass(net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat);
@@ -1707,6 +1707,8 @@ common.获取拼音=function (src){
   }
   return pys;
 }
+
+
 
 common.clickAttr = function (attr, value, 找控件默认超时时间) {
   var 找控件默认超时时间 = 找控件默认超时时间 || 10000
@@ -2555,7 +2557,7 @@ common.确保有jar文件 = function (jarFileName){
   files.ensureDir(path)
   var r=files.exists(path)
   if(r){
-    return true;
+    return path;
   }else{
     switch(jarFileName)
     {
@@ -2571,6 +2573,7 @@ common.确保有jar文件 = function (jarFileName){
       exit()
     }
   }
+  return path;
 }
 
 common.获取QQ收藏内容=function(url){
