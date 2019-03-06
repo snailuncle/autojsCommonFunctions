@@ -1564,7 +1564,9 @@ common.获取deflate网页内容 = function (url,headers) {
   return false
 }
 
-common.获取gzip网页内容 = function (url,form,headers) {
+common.获取gzip网页内容 = function (url,form,headers,method) {
+  var method=method || 'get'
+  var headers=headers || {}  
   function 保存zip文件(zipFile) {
     var path = files.join(files.cwd(), "1下载bilibili弹幕专用/webPage.gzip.js")
     files.createWithDirs(path)
@@ -1612,10 +1614,21 @@ common.获取gzip网页内容 = function (url,form,headers) {
     out.close();
     zipin.close();
   }
-  var res = http.get(
+  var res=null;
+  if(method=='get'){
+    res = http.get(
+    url, {
+      headers: headers
+    })  
+  }else if(method=='post'){
+    res = http.post(
     url, form, {
       headers: headers
     })
+  }else{
+      alert('请自行添加get post 之外的方法')
+      exit()
+  }
   log("statusCode = " + res.statusCode);
   var gzipFileContent = res.body.bytes()
   var 网页内容 = null;
