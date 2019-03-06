@@ -1564,7 +1564,7 @@ common.获取deflate网页内容 = function (url,headers) {
   return false
 }
 
-common.获取gzip网页内容 = function (url,headers) {
+common.获取gzip网页内容 = function (url,form,headers) {
   function 保存zip文件(zipFile) {
     var path = files.join(files.cwd(), "1下载bilibili弹幕专用/webPage.gzip.js")
     files.createWithDirs(path)
@@ -1613,7 +1613,7 @@ common.获取gzip网页内容 = function (url,headers) {
     zipin.close();
   }
   var res = http.get(
-    url, {
+    url, form, {
       headers: headers
     })
   log("statusCode = " + res.statusCode);
