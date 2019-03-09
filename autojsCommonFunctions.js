@@ -2095,7 +2095,7 @@ function 反色(color) {
 };
 
 common.bmob上传文件 = function (url, path, appId, restKey) {
-
+  // 注意:url尾部必须带后缀名,后缀名随意
   // 使用例子
   // var url = "https://api2.bmob.cn/2/files/pinyin4j.jar"
   // // var path = "/storage/emulated/0/pinyin4j.jar"
